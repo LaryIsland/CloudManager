@@ -57,7 +57,7 @@ title LaryIsland's Cloud Manager
 		set githubLatest=%%B
 	)
 
-	if [%githubLatest%]==[] (
+	if ["%githubLatest%"]==[""] (
 		echo Unable to fetch update status
 		call :PauseReturnToMenu
 		goto :MainMenu
@@ -107,16 +107,19 @@ title LaryIsland's Cloud Manager
 			goto :MainMenu
 		)
 		echo Downloading update...
-		curl -kOL %githubLatest%
+		curl -kL %githubLatest% -o "LaryIslandCloudManager.download"
 		echo.
-		echo Download complete!
-		call :PauseReturnToMenu
-		goto :MainMenu
+		echo Updating please wait...
+		echo @echo off>"LCMUpdater.bat"
+		echo del "LaryIslandCloudManager.bat">>"LCMUpdater.bat"
+		echo ren "LaryIslandCloudManager.download" "LaryIslandCloudManager.bat">>"LCMUpdater.bat"
+		echo goto 2^>nul ^& del ^"%%~f0^" ^& LaryIslandCloudManager.bat>>"LCMUpdater.bat"
+		LCMUpdater.bat
 
 
 
 :Case_Main_3
-	start "" https://github.com/LaryIsland/CloudManager/issues
+	start "" https://github.com/LaryIsland/CloudManager/issues/new/choose
 	goto :MainMenu
 
 
